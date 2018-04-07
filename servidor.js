@@ -4,5 +4,7 @@ const express = require('express')
 const servidorExpress = express()
 
 require('./routes/produtos')(servidorExpress)
+require('./routes/home')(servidorExpress)
+
 
 module.exports = servidorExpress
