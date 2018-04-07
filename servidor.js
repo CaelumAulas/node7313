@@ -1,17 +1,8 @@
 const express = require('express')
-
 // Express Framework
 // handler requests/pedido
-const servidor = express()
+const servidorExpress = express()
 
-// Rota
-servidor.get("/", function(request, response){
-    response.render('home.ejs', {
-        lista: [
-            {titulo: "Livro 1"}
-        ]
-    })
-})
+require('./routes/produtos')(servidorExpress)
 
-servidor.listen(3000)
-console.log("Servidor foi criado")
+module.exports = servidorExpress
