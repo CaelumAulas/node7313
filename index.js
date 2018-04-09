@@ -1,3 +1,5 @@
 const servidor = require('./servidor')
-servidor.listen(3000)
-console.log("Servidor subiu")
+// começar a procurar pela porta
+servidor.listen(8080, function(){
+    console.log("Servidor subiu")
+})
