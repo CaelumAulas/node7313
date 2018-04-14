@@ -9,6 +9,9 @@ const servidorExpress = express()
 // Plugin do express
 servidorExpress.use(express.urlencoded())
 
+const expressValidator = require('express-validator')
+servidorExpress.use(expressValidator())
+
 require('./routes/produtos')(servidorExpress)
 require('./routes/home')(servidorExpress)
 

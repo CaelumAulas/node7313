@@ -30,17 +30,28 @@ function formProduto(req, res){
 function cadastraProduto(req, res, next){
     
     const livro = req.body
-    const LivrosDAO = require('../db/LivrosDAO3')
-    const livrosDAO = new LivrosDAO()
 
-    livrosDAO.cadastra(livro, function(erro){
-        if(erro){
-           next(erro)
-        } else {
-            // ir para a lista
+    req.assert('titulo', 'Titulo está vazio').notEmpty()
+    req.assert('preco', 'Preco inválido').isNumeric()
+
+    const promiseValidacao = req.asyncValidationErrors()
+
+    promiseValidacao
+        .then(function(){
+            const LivrosDAO = require('../db/LivrosDAO3')
+            const livrosDAO = new LivrosDAO()
+        
+            return livrosDAO.cadastra(livro)
+        })
+        .then(function(erro){
             res.redirect('/produtos')
-        }
-    })
+        })
+        .catch(function(listaErros) {
+            res.render('produtos/form.ejs', {
+                validationErrors: listaErros 
+            })
+        })
+
 }
 
 module.exports = {
