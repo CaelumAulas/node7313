@@ -1,20 +1,22 @@
 const connectionFactory = require('../db/connectionFactory')
 
-function listaProdutos(request, response){
+function listaProdutos(request, response, next){
     
     const LivrosDAO = require('../db/LivrosDAO3')
     const livrosDAO = new LivrosDAO()
    
     livrosDAO.lista(function responde(erro, lista){
-        if(erro){
-           response.render('erros/500.ejs', {
-               erro: erro
-           })
-        }else {
-            response.render('produtos/lista.ejs', {
-                livros: lista,
-                msgErro: ""
-            })
+        try {
+            if(erro){
+               next(erro)
+            }else {
+                response.render('produtos/lista.ejs', {
+                    livros: lista,
+                    msgErro: ""
+                })
+            }
+        } catch (erro) {
+            next(erro)
         }
     })
 }
@@ -25,17 +27,15 @@ function formProduto(req, res){
     })
 }
 
-function cadastraProduto(req, res){
-    const livro = req.data
-
+function cadastraProduto(req, res, next){
+    
+    const livro = req.body
     const LivrosDAO = require('../db/LivrosDAO3')
     const livrosDAO = new LivrosDAO()
 
     livrosDAO.cadastra(livro, function(erro){
         if(erro){
-            res.render('erros/500.ejs', {
-                erro: erro
-            })
+           next(erro)
         } else {
             // ir para a lista
             res.redirect('/produtos')

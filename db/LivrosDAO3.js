@@ -11,6 +11,6 @@ module.exports = class LivrosDAO {
     }
 
     cadastra(livro, callback) {
-        callback()
+        this._conexao.query("INSERT INTO livros SET ?", livro, callback)
     }
 }
