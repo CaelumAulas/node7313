@@ -1,15 +1,15 @@
+const connectionFactory = require('../db/connectionFactory')
+
 function listaProdutos(request, response){
-    const mysql = require('mysql')
-    const conexao = mysql.createConnection({
-        database: "cdc",
-        host: "localhost", 
-        port: 32768, 
-        user: "root", 
-        password: ""
-    })
-    conexao.query("SELECT * FROM livros", function responde(erro, lista){
+    
+    const LivrosDAO = require('../db/LivrosDAO3')
+    const livrosDAO = new LivrosDAO()
+   
+    livrosDAO.lista(function responde(erro, lista){
         if(erro){
-           console.error(erro) 
+           response.render('erros/500.ejs', {
+               erro: erro
+           })
         }else {
             response.render('produtos/lista.ejs', {
                 livros: lista,
@@ -19,6 +19,32 @@ function listaProdutos(request, response){
     })
 }
 
+function formProduto(req, res){
+    res.render('produtos/form.ejs', {
+      validationErrors: []  
+    })
+}
+
+function cadastraProduto(req, res){
+    const livro = req.data
+
+    const LivrosDAO = require('../db/LivrosDAO3')
+    const livrosDAO = new LivrosDAO()
+
+    livrosDAO.cadastra(livro, function(erro){
+        if(erro){
+            res.render('erros/500.ejs', {
+                erro: erro
+            })
+        } else {
+            // ir para a lista
+            res.redirect('/produtos')
+        }
+    })
+}
+
 module.exports = {
     lista: listaProdutos
+    ,form: formProduto
+    ,cadastra: cadastraProduto
 }
