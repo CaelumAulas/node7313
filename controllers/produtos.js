@@ -16,11 +16,18 @@ function listaProdutos(request, response, next){
             if(erro){
                next(erro)
             }else {
-                response.render('produtos/lista.ejs', {
-                    livros: lista,
-                    msgErro: msg,
-                    
-                })
+                response.format({
+                    html: () => {
+                        response.render('produtos/lista.ejs', {
+                            livros: lista,
+                            msgErro: msg,
+                            
+                        })
+                    },
+                    json: () => {
+                        response.json(lista)
+                    }
+                })        
             }
         } catch (erro) {
             next(erro)
@@ -74,9 +81,29 @@ function excluiProduto(req, res) {
     })
 }
 
+function formAtualizaProduto(req, res) {
+    const id = req.params.id
+    const livrosDAO = new LivrosDAO()
+
+    livrosDAO.pegarPorId(id, (erro, livro) => {
+        console.log(livro)
+        res.render('produtos/atualiza.ejs',{ livro })
+    })
+}
+
+function atualizaProduto(req, res) {
+    const livro = req.body
+
+    console.log(livro)
+
+    res.send('FOI')
+}
+
 module.exports = {
     lista: listaProdutos
     ,form: formProduto
     ,cadastra: cadastraProduto
     ,exclui: excluiProduto
+    ,formAtualiza: formAtualizaProduto
+    ,atualiza: atualizaProduto
 }
