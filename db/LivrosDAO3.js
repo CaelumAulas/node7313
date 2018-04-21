@@ -13,4 +13,18 @@ module.exports = class LivrosDAO {
     cadastra(livro, callback) {
         this._conexao.query("INSERT INTO livros SET ?", livro, callback)
     }
+
+    exclui(id, callback) {
+        this._conexao.query('DELETE FROM livros WHERE id=?', id, callback)
+    }
 }
+
+
+
+
+
+
+
+
+
+

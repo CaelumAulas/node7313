@@ -4,4 +4,5 @@ module.exports = function (app){
     app.get("/produtos", ProdutoController.lista)
     app.get("/produtos/form", ProdutoController.form)
     app.post("/produtos", ProdutoController.cadastra)
+    app.get("/produtos/:id", ProdutoController.exclui)
 }

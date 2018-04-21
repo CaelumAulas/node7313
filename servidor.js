@@ -1,3 +1,7 @@
+// const dotenv = require('dotenv')
+// dotenv.config()
+require('dotenv').config()
+
 const express = require('express')
 // Express Framework
 // handler requests/pedido
